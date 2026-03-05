@@ -1,0 +1,1522 @@
+openapi: 3.0.0
+info:
+  contact: {}
+  description: Garment Production Management System API
+  title: GPMS API
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /api:
+    get:
+      operationId: AppController_getHello
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags:
+      - App
+      x-accepts:
+      - application/json
+  /api/health:
+    get:
+      operationId: HealthController_health
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags:
+      - Health
+      x-accepts:
+      - application/json
+  /api/auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      tags:
+      - Auth
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/auth/logout:
+    post:
+      operationId: AuthController_logout
+      parameters: []
+      responses:
+        "201":
+          description: ""
+      tags:
+      - Auth
+      x-accepts:
+      - application/json
+  /api/auth/me:
+    get:
+      operationId: AuthController_me
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags:
+      - Auth
+      x-accepts:
+      - application/json
+  /api/buyers:
+    get:
+      operationId: BuyersController_findAll
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: List buyers for the selected factory
+      tags:
+      - buyers
+      x-accepts:
+      - application/json
+    post:
+      operationId: BuyersController_create
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBuyerDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create a buyer in the selected factory
+      tags:
+      - buyers
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/buyers/{id}:
+    delete:
+      operationId: BuyersController_remove
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Delete a buyer from the selected factory
+      tags:
+      - buyers
+      x-accepts:
+      - application/json
+    put:
+      operationId: BuyersController_update
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBuyerDto'
+        required: true
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Update a buyer in the selected factory
+      tags:
+      - buyers
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/cutting/batches:
+    post:
+      operationId: CuttingController_createBatch
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCuttingBatchDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create a cutting batch
+      tags:
+      - cutting
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/cutting/batches/{id}/bundles:
+    post:
+      operationId: CuttingController_createBundles
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBundlesDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create bundles for a cutting batch
+      tags:
+      - cutting
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/cutting/batches/{id}:
+    get:
+      operationId: CuttingController_findOne
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Get a cutting batch with bundles
+      tags:
+      - cutting
+      x-accepts:
+      - application/json
+  /api/cutting/bundles:
+    get:
+      operationId: CuttingController_listBundles
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: List bundles in the selected factory
+      tags:
+      - cutting
+      x-accepts:
+      - application/json
+  /api/inventory/receive:
+    post:
+      operationId: InventoryController_receive
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceiveInventoryDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Receive inventory into the selected factory ledger
+      tags:
+      - inventory
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/inventory/issue-to-cutting:
+    post:
+      operationId: InventoryController_issueToCutting
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IssueToCuttingDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Issue inventory to cutting from the selected factory ledger
+      tags:
+      - inventory
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/inventory/stock:
+    get:
+      operationId: InventoryController_getStock
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: materialId
+        required: false
+        schema:
+          example: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+          type: string
+        style: form
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Get current stock by material from ledger transactions
+      tags:
+      - inventory
+      x-accepts:
+      - application/json
+  /api/materials:
+    get:
+      operationId: MaterialsController_findAll
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: List materials for the selected factory
+      tags:
+      - materials
+      x-accepts:
+      - application/json
+    post:
+      operationId: MaterialsController_create
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMaterialDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create a material in the selected factory
+      tags:
+      - materials
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/plans:
+    post:
+      operationId: PlansController_create
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePlanDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create a production plan
+      tags:
+      - plans
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/plans/{id}/assign:
+    post:
+      operationId: PlansController_assign
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignPlanLineDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Assign a PO item to a line within a production plan
+      tags:
+      - plans
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/plans/{id}:
+    get:
+      operationId: PlansController_findOne
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Get production plan detail with plan lines and targets
+      tags:
+      - plans
+      x-accepts:
+      - application/json
+  /api/reports/plan-vs-actual:
+    get:
+      operationId: ReportsController_getPlanVsActual
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: date
+        required: true
+        schema:
+          example: 2026-04-02
+          type: string
+        style: form
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Get target vs actual output by line for a given date
+      tags:
+      - reports
+      x-accepts:
+      - application/json
+  /api/pos:
+    get:
+      operationId: PurchaseOrdersController_findAll
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: List purchase orders for the selected factory
+      tags:
+      - purchase-orders
+      x-accepts:
+      - application/json
+    post:
+      operationId: PurchaseOrdersController_create
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePurchaseOrderDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create a purchase order header
+      tags:
+      - purchase-orders
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/pos/{id}/items:
+    post:
+      operationId: PurchaseOrdersController_addItem
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPoItemDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Add an item to a draft purchase order
+      tags:
+      - purchase-orders
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/pos/{id}:
+    get:
+      operationId: PurchaseOrdersController_findOne
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Get purchase order detail with items
+      tags:
+      - purchase-orders
+      x-accepts:
+      - application/json
+  /api/pos/{id}/confirm:
+    post:
+      operationId: PurchaseOrdersController_confirm
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Confirm a draft purchase order
+      tags:
+      - purchase-orders
+      x-accepts:
+      - application/json
+  /api/pos/{id}/status:
+    post:
+      operationId: PurchaseOrdersController_updateStatus
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePoStatusDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Update purchase order status; non-admin users can only move one step
+        forward
+      tags:
+      - purchase-orders
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/pos/{id}/material-requirement:
+    get:
+      operationId: PurchaseOrdersController_getMaterialRequirement
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Compute material requirements from PO item quantities and style BOMs
+      tags:
+      - purchase-orders
+      x-accepts:
+      - application/json
+  /api/qc/inspect:
+    post:
+      operationId: QcController_inspect
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQcInspectionDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create a QC inspection for a bundle
+      tags:
+      - qc
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/qc/summary:
+    get:
+      operationId: QcController_getSummary
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: date
+        required: true
+        schema:
+          example: 2026-04-02
+          type: string
+        style: form
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Get QC summary for a specific date
+      tags:
+      - qc
+      x-accepts:
+      - application/json
+  /api/sewing/hourly-output:
+    post:
+      operationId: SewingController_createHourlyOutput
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateHourlyOutputDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create an hourly sewing output entry
+      tags:
+      - sewing
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/sewing/line-status:
+    get:
+      operationId: SewingController_getLineStatus
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: date
+        required: true
+        schema:
+          example: 2026-04-02
+          type: string
+        style: form
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Get line status snapshot for a given date
+      tags:
+      - sewing
+      x-accepts:
+      - application/json
+  /api/styles:
+    get:
+      operationId: StylesController_findAll
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: List styles for the selected factory
+      tags:
+      - styles
+      x-accepts:
+      - application/json
+    post:
+      operationId: StylesController_create
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStyleDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create a style in the selected factory
+      tags:
+      - styles
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/styles/{id}:
+    delete:
+      operationId: StylesController_remove
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Delete a style from the selected factory
+      tags:
+      - styles
+      x-accepts:
+      - application/json
+    put:
+      operationId: StylesController_update
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStyleDto'
+        required: true
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Update a style in the selected factory
+      tags:
+      - styles
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /api/styles/{id}/bom:
+    get:
+      operationId: StylesController_getBom
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          description: ""
+      security:
+      - bearer: []
+      summary: Get the BOM for a style
+      tags:
+      - styles
+      x-accepts:
+      - application/json
+    post:
+      operationId: StylesController_upsertBom
+      parameters:
+      - description: Factory UUID selected for the request scope
+        explode: false
+        in: header
+        name: x-factory-id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertBomDto'
+        required: true
+      responses:
+        "201":
+          description: ""
+      security:
+      - bearer: []
+      summary: Create or replace the BOM for a style
+      tags:
+      - styles
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    LoginDto:
+      properties: {}
+      type: object
+    CreateBuyerDto:
+      example:
+        country: Sweden
+        name: H&M
+      properties:
+        name:
+          example: H&M
+          type: string
+        country:
+          example: Sweden
+          type: string
+      required:
+      - name
+      type: object
+    UpdateBuyerDto:
+      example:
+        country: Sweden
+        name: H&M
+      properties:
+        name:
+          example: H&M
+          type: string
+        country:
+          example: Sweden
+          type: string
+      type: object
+    CreateCuttingBatchDto:
+      example:
+        batchNo: CB-001
+        poItemId: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+      properties:
+        poItemId:
+          example: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+          type: string
+        batchNo:
+          example: CB-001
+          type: string
+      required:
+      - batchNo
+      - poItemId
+      type: object
+    CreateBundleItemDto:
+      example:
+        size: L
+        qty: 50
+      properties:
+        size:
+          example: L
+          type: string
+        qty:
+          example: 50
+          type: number
+      required:
+      - qty
+      - size
+      type: object
+    CreateBundlesDto:
+      example:
+        bundles:
+        - size: L
+          qty: 50
+        - size: L
+          qty: 50
+      properties:
+        bundles:
+          items:
+            $ref: '#/components/schemas/CreateBundleItemDto'
+          type: array
+      required:
+      - bundles
+      type: object
+    ReceiveInventoryDto:
+      example:
+        note: First fabric receipt for PO-2026-0001
+        qty: 250.5
+        refType: GRN
+        refId: GRN-2026-001
+        materialId: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+      properties:
+        materialId:
+          example: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+          type: string
+        qty:
+          example: 250.5
+          type: number
+        refType:
+          default: GRN
+          example: GRN
+          type: string
+        refId:
+          example: GRN-2026-001
+          type: string
+        note:
+          example: First fabric receipt for PO-2026-0001
+          type: string
+      required:
+      - materialId
+      - qty
+      - refType
+      type: object
+    IssueToCuttingDto:
+      example:
+        note: Issued to cutting floor for batch 001
+        qty: 120.25
+        refType: ISSUE_CUTTING
+        refId: CUT-BATCH-001
+        materialId: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+      properties:
+        materialId:
+          example: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+          type: string
+        qty:
+          example: 120.25
+          type: number
+        refType:
+          default: ISSUE_CUTTING
+          example: ISSUE_CUTTING
+          type: string
+        refId:
+          example: CUT-BATCH-001
+          type: string
+        note:
+          example: Issued to cutting floor for batch 001
+          type: string
+      required:
+      - materialId
+      - qty
+      - refType
+      type: object
+    CreateMaterialDto:
+      example:
+        uom: kg
+        name: Single Jersey Fabric
+        type: Fabric
+      properties:
+        name:
+          example: Single Jersey Fabric
+          type: string
+        type:
+          example: Fabric
+          type: string
+        uom:
+          example: kg
+          type: string
+      required:
+      - name
+      - type
+      - uom
+      type: object
+    CreatePlanDto:
+      example:
+        endDate: 2026-04-07
+        name: Week 14 Master Plan
+        startDate: 2026-04-01
+      properties:
+        name:
+          example: Week 14 Master Plan
+          type: string
+        startDate:
+          example: 2026-04-01
+          type: string
+        endDate:
+          example: 2026-04-07
+          type: string
+      required:
+      - endDate
+      - name
+      - startDate
+      type: object
+    DailyTargetDto:
+      example:
+        date: 2026-04-02
+        targetQty: 500
+      properties:
+        date:
+          example: 2026-04-02
+          type: string
+        targetQty:
+          example: 500
+          type: number
+      required:
+      - date
+      - targetQty
+      type: object
+    AssignPlanLineDto:
+      example:
+        endDate: 2026-04-05
+        poItemId: a2f5d915-5979-4f87-90ba-0903c92ef892
+        dailyTargets:
+        - date: 2026-04-02
+          targetQty: 500
+        - date: 2026-04-02
+          targetQty: 500
+        lineId: f72bd0c8-5a7a-46c7-9e57-e3c3b67e72b1
+        poId: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+        startDate: 2026-04-02
+      properties:
+        poId:
+          example: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+          type: string
+        poItemId:
+          example: a2f5d915-5979-4f87-90ba-0903c92ef892
+          type: string
+        lineId:
+          example: f72bd0c8-5a7a-46c7-9e57-e3c3b67e72b1
+          type: string
+        startDate:
+          example: 2026-04-02
+          type: string
+        endDate:
+          example: 2026-04-05
+          type: string
+        dailyTargets:
+          items:
+            $ref: '#/components/schemas/DailyTargetDto'
+          type: array
+      required:
+      - dailyTargets
+      - endDate
+      - lineId
+      - poId
+      - poItemId
+      - startDate
+      type: object
+    CreatePurchaseOrderDto:
+      example:
+        poNo: PO-2026-0001
+        buyerId: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+      properties:
+        poNo:
+          example: PO-2026-0001
+          type: string
+        buyerId:
+          example: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+          type: string
+      required:
+      - buyerId
+      - poNo
+      type: object
+    AddPoItemDto:
+      example:
+        quantity: 1200
+        color: Navy
+        styleId: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+        sizeBreakdown:
+          S: 200
+          M: 400
+          L: 400
+          XL: 200
+      properties:
+        styleId:
+          example: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+          type: string
+        color:
+          example: Navy
+          type: string
+        quantity:
+          example: 1200
+          type: number
+        sizeBreakdown:
+          description: Optional size-wise quantity breakdown
+          example:
+            S: 200
+            M: 400
+            L: 400
+            XL: 200
+          type: object
+      required:
+      - color
+      - quantity
+      - styleId
+      type: object
+    UpdatePoStatusDto:
+      example:
+        status: IN_PRODUCTION
+      properties:
+        status:
+          enum:
+          - DRAFT
+          - CONFIRMED
+          - IN_PRODUCTION
+          - SHIPPED
+          - CLOSED
+          example: IN_PRODUCTION
+          type: string
+      required:
+      - status
+      type: object
+    QcDefectDto:
+      example:
+        count: 3
+        defectType: Broken stitch
+      properties:
+        defectType:
+          example: Broken stitch
+          type: string
+        count:
+          example: 3
+          type: number
+      required:
+      - count
+      - defectType
+      type: object
+    CreateQcInspectionDto:
+      example:
+        notes: Inline inspection completed with minor notes
+        pass: true
+        defects:
+        - count: 3
+          defectType: Broken stitch
+        - count: 3
+          defectType: Broken stitch
+        bundleId: 3bcd3153-5f12-4948-93ea-933c44c54a50
+        type: INLINE
+      properties:
+        bundleId:
+          example: 3bcd3153-5f12-4948-93ea-933c44c54a50
+          type: string
+        type:
+          enum:
+          - INLINE
+          - ENDLINE
+          - FINAL
+          example: INLINE
+          type: string
+        pass:
+          example: true
+          type: boolean
+        notes:
+          example: Inline inspection completed with minor notes
+          type: string
+        defects:
+          items:
+            $ref: '#/components/schemas/QcDefectDto'
+          type: array
+      required:
+      - bundleId
+      - pass
+      - type
+      type: object
+    CreateHourlyOutputDto:
+      example:
+        date: 2026-04-02
+        hourSlot: 9
+        qty: 120
+        bundleId: 3bcd3153-5f12-4948-93ea-933c44c54a50
+        lineId: f72bd0c8-5a7a-46c7-9e57-e3c3b67e72b1
+      properties:
+        lineId:
+          example: f72bd0c8-5a7a-46c7-9e57-e3c3b67e72b1
+          type: string
+        date:
+          example: 2026-04-02
+          type: string
+        hourSlot:
+          example: 9
+          maximum: 23
+          minimum: 0
+          type: number
+        qty:
+          example: 120
+          type: number
+        bundleId:
+          example: 3bcd3153-5f12-4948-93ea-933c44c54a50
+          type: string
+      required:
+      - date
+      - hourSlot
+      - lineId
+      - qty
+      type: object
+    CreateStyleDto:
+      example:
+        styleNo: ST-1001
+        name: Basic Polo Shirt
+        season: Summer 2026
+      properties:
+        styleNo:
+          example: ST-1001
+          type: string
+        name:
+          example: Basic Polo Shirt
+          type: string
+        season:
+          example: Summer 2026
+          type: string
+      required:
+      - styleNo
+      type: object
+    UpdateStyleDto:
+      example:
+        styleNo: ST-1001
+        name: Basic Polo Shirt
+        season: Summer 2026
+      properties:
+        styleNo:
+          example: ST-1001
+          type: string
+        name:
+          example: Basic Polo Shirt
+          type: string
+        season:
+          example: Summer 2026
+          type: string
+      type: object
+    BomItemInputDto:
+      example:
+        consumption: 1.45
+        materialId: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+      properties:
+        materialId:
+          example: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+          type: string
+        consumption:
+          example: 1.45
+          type: number
+      required:
+      - consumption
+      - materialId
+      type: object
+    UpsertBomDto:
+      example:
+        items:
+        - consumption: 1.45
+          materialId: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+        - consumption: 1.45
+          materialId: 9a3a44d1-0b0a-4fe9-a6ad-66db595d9b82
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/BomItemInputDto'
+          type: array
+      required:
+      - items
+      type: object
+  securitySchemes:
+    cookie:
+      in: cookie
+      name: gpms_access
+      type: apiKey
+
