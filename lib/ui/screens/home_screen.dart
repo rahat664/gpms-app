@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/session/session_controller.dart';
 import '../../features/dashboard/data/dashboard_repository.dart';
 import '../../features/dashboard/presentation/dashboard_tab.dart';
+import '../../features/workspace/presentation/workspace_tab.dart';
 import '../../features/pos/data/po_repository.dart';
 import '../../features/pos/presentation/orders_tab.dart';
 import '../../features/settings/presentation/settings_tab.dart';
@@ -17,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final index = currentTab.clamp(0, 2);
+    final index = currentTab.clamp(0, 3);
     final session = ref.watch(sessionControllerProvider);
     String? activeFactoryName;
     for (final factory in session.factories) {
@@ -38,7 +39,8 @@ class HomeScreen extends ConsumerWidget {
 
     final tabTitle = switch (index) {
       0 => 'Live Dashboard',
-      1 => 'Purchase Orders',
+      1 => 'Orders',
+      2 => 'Workspaces',
       _ => 'Settings',
     };
 
@@ -54,12 +56,19 @@ class HomeScreen extends ConsumerWidget {
             ref.invalidate(poListProvider);
           case 2:
             break;
+          case 3:
+            break;
         }
       },
       onFactorySwitch: () => context.go('/factory-selector'),
       body: IndexedStack(
         index: index,
-        children: const <Widget>[DashboardTab(), OrdersTab(), SettingsTab()],
+        children: const <Widget>[
+          DashboardTab(),
+          OrdersTab(),
+          WorkspaceTab(),
+          SettingsTab(),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
@@ -76,6 +85,11 @@ class HomeScreen extends ConsumerWidget {
             icon: Icon(Icons.receipt_long_outlined),
             selectedIcon: Icon(Icons.receipt_long_rounded),
             label: 'Orders',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.apps_outlined),
+            selectedIcon: Icon(Icons.apps_rounded),
+            label: 'Workspaces',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
